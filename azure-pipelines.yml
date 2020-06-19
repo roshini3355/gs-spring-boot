@@ -15,7 +15,7 @@ variables:
   webAppName: 'java-spring-boot'
 
   # Agent VM image name
-  vmImageName: 'ubuntu-latest'
+  vmImageName: 'windows-latest'
 
 stages:
 - stage: Build
@@ -49,8 +49,8 @@ stages:
   dependsOn: Build
   condition: succeeded()
   jobs:
-  - deployment: DeployLinuxWebApp
-    displayName: Deploy Linux Web App
+  - deployment: DeployWindowsWebApp
+    displayName: Deploy Windows Web App
     environment: 'development'
     pool: 
       vmImage: $(vmImageName)
@@ -66,7 +66,8 @@ stages:
           - task: AzureWebApp@1
             displayName: 'Azure Web App Deploy: gs-spring-boot'
             inputs:
-              azureSubscription: $(azureSubscription)
-              appType: webAppLinux
-              appName: $(webAppName)
+              azureSubscription: 'Visual Studio Enterprise – MPN (fcf25602-06c2-4edc-b903-5b3c8099c1ee)'
+              appType: 'webApp'
+              appName: 'azurepipelinewindowsapp'
               package: '$(System.ArtifactsDirectory)/drop/**/target/*.?(war|jar)'
+              deploymentMethod: 'auto'
